@@ -1,6 +1,8 @@
 package com.dws.challenge.web;
 
 import com.dws.challenge.domain.Account;
+import com.dws.challenge.domain.ProcessLog;
+import com.dws.challenge.domain.TransferDTO;
 import com.dws.challenge.exception.DuplicateAccountIdException;
 import com.dws.challenge.service.AccountsService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,19 @@ public class AccountsController {
   public Account getAccount(@PathVariable String accountId) {
     log.info("Retrieving account for id {}", accountId);
     return this.accountsService.getAccount(accountId);
+  }
+
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/transfer")
+  public ResponseEntity<Object> transferAmount(@RequestBody @Valid TransferDTO transferDTO) {
+	ProcessLog processLog = new ProcessLog();
+	processLog.init();
+    log.info("TranID : {} : Started : Transferring amount:{} from {} to {}", processLog.getUniqReqID(), transferDTO.getAmount(),
+    		transferDTO.getAccountFromId(), transferDTO.getAccountToId() );
+    this.accountsService.transferAmount(transferDTO, processLog);
+    log.info("TranID : {} : Completed : Transferring amount:{} from {} to {}", processLog.getUniqReqID(), transferDTO.getAmount(),
+    		transferDTO.getAccountFromId(), transferDTO.getAccountToId() );
+
+    return new ResponseEntity<>("Transfer Completed successfully", HttpStatus.OK);
   }
 
 }

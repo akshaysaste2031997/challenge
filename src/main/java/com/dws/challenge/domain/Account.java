@@ -1,6 +1,7 @@
 package com.dws.challenge.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import lombok.Data;
@@ -19,6 +20,9 @@ public class Account {
   @NotNull
   @Min(value = 0, message = "Initial balance must be positive.")
   private BigDecimal balance;
+  
+  @JsonIgnore
+  private boolean isPending;
 
   public Account(String accountId) {
     this.accountId = accountId;

@@ -8,6 +8,10 @@ public interface AccountsRepository {
   void createAccount(Account account) throws DuplicateAccountIdException;
 
   Account getAccount(String accountId);
+  
+  void saveAccount(Account account);
+  
+  void updateStatus(Account account, boolean status);
 
   void clearAccounts();
 }
